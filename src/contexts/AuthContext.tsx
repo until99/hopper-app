@@ -1,14 +1,14 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
 import axios from 'axios'
-import type { User } from '../interfaces/user'
+import type { IUser } from '../interfaces/user'
 
 interface AuthContextType {
     isAuthenticated: boolean
-    user: User | null
     login: (email: string, password: string) => Promise<boolean>
     logout: () => void
     loading: boolean
+    user: IUser | null
     isAdmin: () => boolean
 }
 
@@ -16,7 +16,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
-    const [user, setUser] = useState<User | null>(null)
+    const [user, setUser] = useState<IUser | null>(null)
     const [loading, setLoading] = useState(true)
 
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 const { token, record } = response.data
 
                 localStorage.setItem('authToken', token)
+                localStorage.setItem('user', JSON.stringify(record))
 
                 setUser(record)
                 setIsAuthenticated(true)
@@ -49,25 +50,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const logout = () => {
         localStorage.removeItem('authToken')
+        localStorage.removeItem('user')
         setUser(null)
         setIsAuthenticated(false)
     }
 
     const isAdmin = () => {
-        return user?.roles === 'admin'
+        return user?.role === 'admin'
     }
 
     useEffect(() => {
         const checkAuth = async () => {
             const token = localStorage.getItem('authToken')
+            const userString = localStorage.getItem('user')
 
-            if (token) {
+            if (token && userString) {
                 try {
+                    const userData = JSON.parse(userString)
+                    setUser(userData)
                     setIsAuthenticated(true)
                 } catch (error) {
-                    console.error('Erro ao verificar autenticação:', error)
+                    console.error('Erro ao recuperar dados do usuário:', error)
                     localStorage.removeItem('authToken')
-                    localStorage.removeItem('userId')
+                    localStorage.removeItem('user')
                 }
             }
             setLoading(false)
@@ -77,7 +82,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, [])
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, user, login, logout, loading, isAdmin }}>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout, user, loading, isAdmin }}>
             {children}
         </AuthContext.Provider>
     )
@@ -85,6 +90,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
     const context = useContext(AuthContext)
+
     if (context === undefined) {
         throw new Error('useAuth must be used within an AuthProvider')
     }

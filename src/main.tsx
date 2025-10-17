@@ -18,6 +18,9 @@ import Dashboards from './pages/dashboard/dashboards'
 import DashboardId from './pages/dashboard/$dashboard'
 import CrudDashboard from './pages/admin/dashboard/dashboard'
 
+// Users
+import CrudUsers from './pages/admin/users/users'
+
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
   { path: '*', element: <NotFoundPage /> },
@@ -53,6 +56,14 @@ const router = createBrowserRouter([
       </AdminRoute>
     )
   },
+  {
+    path: '/users/',
+    element: (
+      <AdminRoute>
+        <CrudUsers />
+      </AdminRoute>
+    )
+  }
 ])
 
 createRoot(document.getElementById('root')!).render(
