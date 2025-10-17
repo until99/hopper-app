@@ -1,6 +1,8 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { type IUser } from "../../../interfaces/user"
+import EditUserModal from "../../../components/modals/EditUserModal"
+import DeleteUserModal from "../../../components/modals/DeleteUserModal"
 
 interface IUserResponse {
     page: number
@@ -13,6 +15,10 @@ interface IUserResponse {
 export default function CrudUsers() {
     const [users, setUsers] = useState<IUserResponse>()
     const [loading, setLoading] = useState(true)
+    const [editModalOpen, setEditModalOpen] = useState(false)
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+    const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
+    const [selectedUsername, setSelectedUsername] = useState("")
 
     function fetchUsers(page = 1, limit = 10): IUserResponse | void {
         axios({
@@ -44,6 +50,30 @@ export default function CrudUsers() {
         fetchUsers();
     }, [])
 
+    function openUserEditModal(userId: string, username: string) {
+        return () => {
+            setSelectedUserId(userId)
+            setSelectedUsername(username)
+            setEditModalOpen(true)
+        }
+    }
+
+    function openUserDeleteModal(userId: string, username: string) {
+        return () => {
+            setSelectedUserId(userId)
+            setSelectedUsername(username)
+            setDeleteModalOpen(true)
+        }
+    }
+
+    function handleUserUpdated() {
+        fetchUsers()
+    }
+
+    function handleUserDeleted() {
+        fetchUsers()
+    }
+
     return (
         <>
             <h1>Users</h1>
@@ -70,16 +100,31 @@ export default function CrudUsers() {
                                 <td>{user.username}</td>
                                 <td>{user.email}</td>
                                 <td>{user.role}</td>
-                                <td>{user.active}</td>
+                                <td>{user.active ? "Active" : "Inactive"}</td>
                                 <td>
-                                    <button>Edit</button>
-                                    <button>Delete</button>
+                                    <button onClick={openUserEditModal(user.id, user.username)}>Edit</button>
+                                    <button onClick={openUserDeleteModal(user.id, user.username)}>Delete</button>
                                 </td>
                             </tr>
                         ))
                     )}
                 </tbody>
             </table>
+
+            <EditUserModal
+                isOpen={editModalOpen}
+                onClose={() => setEditModalOpen(false)}
+                userId={selectedUserId}
+                onUserUpdated={handleUserUpdated}
+            />
+
+            <DeleteUserModal
+                isOpen={deleteModalOpen}
+                onClose={() => setDeleteModalOpen(false)}
+                userId={selectedUserId}
+                username={selectedUsername}
+                onUserDeleted={handleUserDeleted}
+            />
         </>
     )
 }
