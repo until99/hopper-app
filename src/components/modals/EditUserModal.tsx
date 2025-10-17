@@ -66,15 +66,17 @@ export default function EditUserModal({
 
     try {
       await axios({
-        url: `${import.meta.env.VITE_API_URL}/user/${userId}`,
         method: 'patch',
+        url: `${import.meta.env.VITE_API_URL}/user/${userId}`,
         data: formData,
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
         },
       });
       onUserUpdated();
       onClose();
+      window.location.reload();
     } catch (err) {
       setError('Erro ao atualizar usuário');
       console.error('Error updating user:', err);

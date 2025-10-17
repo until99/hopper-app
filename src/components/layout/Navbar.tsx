@@ -8,7 +8,7 @@ export default function Navbar() {
     return (
         <nav>
             <p>{user?.username && `Hello, ${user.username}`}</p>
-            <ul>
+            <ul style={{ display: "flex", gap: "1rem", listStyle: "none", padding: 0 }}>
                 {user?.role === 'admin' && (
                     <>
                         <li>
