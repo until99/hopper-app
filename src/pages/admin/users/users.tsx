@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { type IUser } from "../../../interfaces/user"
 import EditUserModal from "../../../components/modals/EditUserModal"
 import DeleteUserModal from "../../../components/modals/DeleteUserModal"
+import Navbar from "../../../components/layout/Navbar"
 
 interface IUserResponse {
     page: number
@@ -76,6 +77,7 @@ export default function CrudUsers() {
 
     return (
         <>
+            <Navbar />
             <h1>Users</h1>
             <table>
                 <thead>
