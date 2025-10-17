@@ -12,8 +12,6 @@ function Dashboards() {
   const { groupId } = useParams()
 
   const handleLogout = () => {
-    console.log('logout');
-
     localStorage.removeItem('authToken')
     localStorage.removeItem('userId')
 

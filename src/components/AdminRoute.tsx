@@ -6,7 +6,7 @@ interface AdminRouteProps {
 }
 
 const AdminRoute = ({ children }: AdminRouteProps) => {
-    const { isAuthenticated, loading, isAdmin } = useAuth()
+    const { isAuthenticated, loading, user } = useAuth()
 
     if (loading) {
         return <div>Thinking...</div>
@@ -16,8 +16,8 @@ const AdminRoute = ({ children }: AdminRouteProps) => {
         return <Navigate to="/login" replace />
     }
 
-    if (!isAdmin()) {
-        return <Navigate to="/" replace />
+    if (user?.role !== 'admin') {
+        return <Navigate to="/groups" replace />
     }
 
     return children

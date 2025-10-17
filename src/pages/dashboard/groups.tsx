@@ -11,8 +11,6 @@ function Groups() {
     const [loading, setLoading] = useState(true)
 
     const handleLogout = () => {
-        console.log('logout');
-
         localStorage.removeItem('authToken')
         localStorage.removeItem('userId')
 
@@ -35,7 +33,6 @@ function Groups() {
                 }
 
                 else {
-                    console.log(response);
                     setGroups(response.data.groups)
                     setLoading(false);
                 }
