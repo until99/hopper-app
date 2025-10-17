@@ -21,36 +21,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
-    useEffect(() => {
-        // Verificar se existe um token e userId armazenados
-        const token = localStorage.getItem('authToken')
-        const userId = localStorage.getItem('userId')
-
-        if (token && userId) {
-            // Buscar dados do usuário
-            fetchUserData(userId)
-        } else {
-            setLoading(false)
-        }
-    }, [])
-
-    const fetchUserData = async (userId: string) => {
-        try {
-            const response = await axios.get(`${API_URL}/user/${userId}`)
-            if (response.data) {
-                setUser(response.data)
-                setIsAuthenticated(true)
-            }
-        } catch (error) {
-            console.error('Erro ao buscar dados do usuário:', error)
-            // Se falhar, limpar dados de autenticação
-            localStorage.removeItem('authToken')
-            localStorage.removeItem('userId')
-        } finally {
-            setLoading(false)
-        }
-    }
-
     const login = async (email: string, password: string): Promise<boolean> => {
         try {
             const response = await axios.post(`${API_URL}/user/auth`, {
@@ -62,22 +32,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 const { token, record } = response.data
 
                 localStorage.setItem('authToken', token)
-                localStorage.setItem('userId', record.id)
 
                 setUser(record)
                 setIsAuthenticated(true)
+
+                setLoading(false)
                 return true
             }
             return false
         } catch (error) {
             console.error('Erro ao fazer login:', error)
+            setLoading(false)
             return false
         }
     }
 
     const logout = () => {
         localStorage.removeItem('authToken')
-        localStorage.removeItem('userId')
         setUser(null)
         setIsAuthenticated(false)
     }
@@ -85,6 +56,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const isAdmin = () => {
         return user?.roles === 'admin'
     }
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            const token = localStorage.getItem('authToken')
+
+            if (token) {
+                try {
+                    setIsAuthenticated(true)
+                } catch (error) {
+                    console.error('Erro ao verificar autenticação:', error)
+                    localStorage.removeItem('authToken')
+                    localStorage.removeItem('userId')
+                }
+            }
+            setLoading(false)
+        }
+
+        checkAuth()
+    }, [])
 
     return (
         <AuthContext.Provider value={{ isAuthenticated, user, login, logout, loading, isAdmin }}>

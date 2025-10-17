@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom"
 
-import { type IPosts } from "../../interfaces/dashboard";
+import { type IDashboard } from "../../interfaces/dashboard";
 import axios from "axios";
 
 function DashboardId() {
-    const { id } = useParams()
+    const { groupId, dashboardId } = useParams()
     const [loading, setLoading] = useState(true)
 
-    const [post, setPost] = useState<IPosts | null>(null)
+    const [dashboard, setDashboard] = useState<IDashboard | null>(null)
 
     useEffect(() => {
-        axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+        axios({
+            method: "get",
+            url: `${import.meta.env.VITE_API_URL}/groups/${groupId}/report/${dashboardId}`,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('authToken')}`
+            }
+        })
             .then((response) => {
 
                 if (response.status !== 200) {
@@ -23,7 +29,9 @@ function DashboardId() {
                 }
 
                 else {
-                    setPost(response.data)
+                    console.log(response.data.embedUrl);
+
+                    setDashboard(response.data)
                     setLoading(false)
                 }
 
@@ -32,29 +40,36 @@ function DashboardId() {
                 console.error("Error fetching dashboards", error)
                 setLoading(false)
             });
-    }, [id]);
+    }, [groupId, dashboardId]);
 
 
     if (loading) {
         return <div>Thinking...</div>
     }
 
-    if (!post || !post.id) {
-        return <div>Post not found</div>
+    if (!dashboard) {
+        return <div>Dashboard not found</div>
     }
 
     return (
         <>
-            <h1>Posts</h1>
+            <h1>Dashboard</h1>
             <ul>
-                <li key={post.id} >
-                    <h2>{post.title}</h2>
-                    <p>{post.body}</p>
+                <li key={dashboard.id} >
+                    <h2>{dashboard.name}</h2>
+                    <p>{dashboard.description}</p>
+                    <iframe
+                        title={"Agents Performance"}
+                        width={"1140"}
+                        height={"541.25"}
+                        src={`https://app.powerbi.com/reportEmbed?reportId=${dashboard.id}&autoAuth=true&ctid=a5504f25-7802-4f62-9940-f4a2f7eba746`}
+                        allowFullScreen={true}>
+                    </iframe>
                     <br />
                 </li>
             </ul >
 
-            <Link to="/">Voltar ao Início</Link>
+            <Link to="/groups">Voltar ao Início</Link>
         </>
     )
 }

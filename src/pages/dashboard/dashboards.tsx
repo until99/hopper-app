@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
-import type { IDashboards } from "../../interfaces/dashboard"
+import type { IDashboard } from "../../interfaces/dashboard"
 import axios from "axios"
 
 
 
 function Dashboards() {
-  const [groups, setGroups] = useState<IDashboards[]>([])
+  const [dashboards, setDashboards] = useState<IDashboard[]>([])
   const [loading, setLoading] = useState(true)
+  const { groupId } = useParams()
 
   const handleLogout = () => {
     console.log('logout');
@@ -23,7 +24,7 @@ function Dashboards() {
   useEffect(() => {
     axios({
       method: "get",
-      url: `${import.meta.env.API_URL}/groups`,
+      url: `${import.meta.env.VITE_API_URL}/groups/${groupId}/reports`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`
       }
@@ -31,27 +32,25 @@ function Dashboards() {
       .then(function (response) {
 
         if (response.status !== 200) {
-          throw new Error("Failed to fetch post")
-        }
-
-        if (!response.data) {
-          throw new Error("Post not found")
+          throw new Error("Failed to fetch dashboards")
         }
 
         else {
-          setGroups(response.data)
+
+          setDashboards(response.data.reports);
           setLoading(false);
         }
 
       })
       .catch(function (error) {
-        console.error("Erro ao requisitar dashboards: ", error);
+        console.error("Erro ao requisitar grupos: ", error);
+        setLoading(false);
       });
-  }, [])
+  }, [groupId])
 
 
   if (loading) {
-    return <p>Loading...</p>
+    return <p>Thinking...</p>
   }
 
   return (
@@ -60,16 +59,20 @@ function Dashboards() {
         <button onClick={handleLogout}>Logout</button>
       </nav>
 
-      <h1>Groups</h1>
-      <ul>
-        {groups.map((group) => (
-          <li key={group.id}>
-            <Link to={`/dashboards/${group.id}`}>
-              <h2>{group.name}</h2>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <h1>Dashboards</h1>
+      {dashboards.length === 0 ? (
+        <p>No dashboards available.</p>
+      ) : (
+        <ul>
+          {dashboards.map((dashboard) => (
+            <li key={dashboard.id}>
+              <Link to={`/groups/${groupId}/dashboards/${dashboard.id}`}>
+                <h2>{dashboard.name}</h2>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   )
 }
