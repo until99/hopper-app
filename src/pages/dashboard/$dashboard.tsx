@@ -29,8 +29,6 @@ function DashboardId() {
                 }
 
                 else {
-                    console.log(response.data.embedUrl);
-
                     setDashboard(response.data)
                     setLoading(false)
                 }
