@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom"
 
-import { type IPosts } from "../../../interfaces/dashboard";
+import { type IPosts } from "../../interfaces/dashboard";
 import axios from "axios";
 
 function DashboardId() {
@@ -36,7 +36,7 @@ function DashboardId() {
 
 
     if (loading) {
-        return <div>Loading...</div>
+        return <div>Thinking...</div>
     }
 
     if (!post || !post.id) {

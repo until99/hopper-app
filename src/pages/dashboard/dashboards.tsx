@@ -1,19 +1,32 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
-import type { IDashboards } from "../../../interfaces/dashboard"
+import type { IDashboards } from "../../interfaces/dashboard"
 import axios from "axios"
 
 
 
 function Dashboards() {
-  const [dashboards, setDashboards] = useState<IDashboards[]>([])
+  const [groups, setGroups] = useState<IDashboards[]>([])
   const [loading, setLoading] = useState(true)
+
+  const handleLogout = () => {
+    console.log('logout');
+
+    localStorage.removeItem('authToken')
+    localStorage.removeItem('userId')
+
+    window.location.href = '/login'
+
+  }
 
   useEffect(() => {
     axios({
       method: "get",
-      url: "https://jsonplaceholder.typicode.com/users",
+      url: `${import.meta.env.API_URL}/groups`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`
+      }
     })
       .then(function (response) {
 
@@ -26,7 +39,7 @@ function Dashboards() {
         }
 
         else {
-          setDashboards(response.data)
+          setGroups(response.data)
           setLoading(false);
         }
 
@@ -43,12 +56,16 @@ function Dashboards() {
 
   return (
     <>
-      <h1>Dashboards</h1>
+      <nav>
+        <button onClick={handleLogout}>Logout</button>
+      </nav>
+
+      <h1>Groups</h1>
       <ul>
-        {dashboards.map((dashboard) => (
-          <li key={dashboard.id}>
-            <Link to={`/dashboards/${dashboard.id}`}>
-              <h2>{dashboard.name}</h2>
+        {groups.map((group) => (
+          <li key={group.id}>
+            <Link to={`/dashboards/${group.id}`}>
+              <h2>{group.name}</h2>
             </Link>
           </li>
         ))}

@@ -1,5 +1,8 @@
-export interface IDashboards {
-  id: number;
+export interface IGroups {
+  id: string;
+  isReadOnly: boolean;
+  isOnDedicatedCapacity: boolean;
+  type: string;
   name: string;
 }
 
