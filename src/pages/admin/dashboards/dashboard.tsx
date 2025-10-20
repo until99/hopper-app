@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import EditDashboardModal from "../../../components/modals/EditDashboardModal";
 import DeleteDashboardModal from "../../../components/modals/DeleteDashboardModal";
 import Navbar from "../../../components/layout/Navbar";
 
@@ -11,15 +10,17 @@ interface IDashboardResponse {
         datasetId: string;
         description: string;
         groupId: string;
+        groupName: string;
     }>;
 }
 
 function CrudDashboard() {
     const [dashboards, setDashboards] = useState<IDashboardResponse['dashboards']>([]);
     const [loading, setLoading] = useState(true);
-    const [editModalOpen, setEditModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedDashboardId, setSelectedDashboardId] = useState<string | null>(null);
+    const [selectedDashboardGroupId, setSelectedDashboardGroupId] = useState<string | null>(null);
+    const [selectedDashboardDatasetId, setSelectedDashboardDatasetId] = useState<string | null>(null);
     const [selectedDashboardName, setSelectedDashboardName] = useState<string>('');
 
     useEffect(() => {
@@ -49,34 +50,24 @@ function CrudDashboard() {
         }
     };
 
-    const handleEditClick = (dashboardId: string) => {
-        setSelectedDashboardId(dashboardId);
-        setEditModalOpen(true);
-    };
-
-    const handleDeleteClick = (dashboardId: string, dashboardName: string) => {
+    const handleDeleteClick = (dashboardId: string, dashboardName: string, dashboardGroupId: string, dashboardDatasetId: string) => {
         setSelectedDashboardId(dashboardId);
         setSelectedDashboardName(dashboardName);
+        setSelectedDashboardGroupId(dashboardGroupId);
+        setSelectedDashboardDatasetId(dashboardDatasetId);
         setDeleteModalOpen(true);
     };
 
-    const handleCloseEditModal = () => {
-        setEditModalOpen(false);
-        setSelectedDashboardId(null);
-    };
 
     const handleCloseDeleteModal = () => {
         setDeleteModalOpen(false);
         setSelectedDashboardId(null);
+        setSelectedDashboardGroupId(null);
         setSelectedDashboardName('');
     };
 
-    const handleDashboardUpdated = () => {
-        fetchDashboards();
-    };
-
     const handleDashboardDeleted = () => {
-        fetchDashboards();
+        window.location.reload();
     };
 
     return (
@@ -88,13 +79,15 @@ function CrudDashboard() {
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Group ID</th>
+                        <th>Group Name</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {loading ? (
                         <tr>
-                            <td colSpan={4}>Loading...</td>
+                            <td colSpan={4}>Thinking...</td>
                         </tr>
                     ) : dashboards.length === 0 ? (
                         <tr>
@@ -105,9 +98,10 @@ function CrudDashboard() {
                             <tr key={dashboard.id}>
                                 <td>{dashboard.id}</td>
                                 <td>{dashboard.name}</td>
+                                <td>{dashboard.groupId}</td>
+                                <td>{dashboard.groupName}</td>
                                 <td>
-                                    <button onClick={() => handleEditClick(dashboard.id)}>Edit</button>
-                                    <button onClick={() => handleDeleteClick(dashboard.id, dashboard.name)}>Delete</button>
+                                    <button onClick={() => handleDeleteClick(dashboard.id, dashboard.name, dashboard.groupId, dashboard.datasetId)}>Delete</button>
                                 </td>
                             </tr>
                         ))
@@ -115,18 +109,13 @@ function CrudDashboard() {
                 </tbody>
             </table>
 
-            <EditDashboardModal
-                isOpen={editModalOpen}
-                onClose={handleCloseEditModal}
-                dashboardId={selectedDashboardId}
-                onDashboardUpdated={handleDashboardUpdated}
-            />
-
             <DeleteDashboardModal
                 isOpen={deleteModalOpen}
                 onClose={handleCloseDeleteModal}
                 dashboardId={selectedDashboardId}
+                groupId={selectedDashboardGroupId}
                 dashboardName={selectedDashboardName}
+                datasetId={selectedDashboardDatasetId}
                 onDashboardDeleted={handleDashboardDeleted}
             />
         </>

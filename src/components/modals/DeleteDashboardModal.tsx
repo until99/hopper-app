@@ -7,7 +7,9 @@ interface DeleteDashboardModalProps {
   isOpen: boolean;
   onClose: () => void;
   dashboardId: string | null;
+  groupId: string | null;
   dashboardName: string;
+  datasetId: string | null;
   onDashboardDeleted: () => void;
 }
 
@@ -15,6 +17,8 @@ export default function DeleteDashboardModal({
   isOpen,
   onClose,
   dashboardId,
+  groupId,
+  datasetId,
   dashboardName,
   onDashboardDeleted,
 }: DeleteDashboardModalProps) {
@@ -28,7 +32,7 @@ export default function DeleteDashboardModal({
     setError(null);
 
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/dashboards/${dashboardId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/groups/${groupId}/report/${dashboardId}/dataset/${datasetId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
         },

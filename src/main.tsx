@@ -13,27 +13,30 @@ import Login from './pages/auth/login'
 import NotFoundPage from './pages/notFoundPage'
 
 // Dashboard
-import Groups from './pages/dashboard/groups'
-import Dashboards from './pages/dashboard/dashboards'
-import DashboardId from './pages/dashboard/$dashboard'
-import CrudDashboard from './pages/admin/dashboard/dashboard'
+import Workspaces from './pages/workspace/workspaces'
+import Dashboards from './pages/workspace/dashboard/dashboards'
+import DashboardId from './pages/workspace/dashboard/$dashboard'
+import CrudDashboard from './pages/admin/dashboards/dashboard'
 
 // Users
 import CrudUsers from './pages/admin/users/users'
+
+// Groups
+import Groups from './pages/admin/groups/group'
 
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
   { path: '*', element: <NotFoundPage /> },
   {
-    path: '/groups',
+    path: '/workspaces',
     element: (
       <ProtectedRoute>
-        <Groups />
+        <Workspaces />
       </ProtectedRoute>
     )
   },
   {
-    path: '/groups/:groupId/dashboards',
+    path: '/workspaces/:groupId/dashboards',
     element: (
       <ProtectedRoute>
         <Dashboards />
@@ -61,6 +64,14 @@ const router = createBrowserRouter([
     element: (
       <AdminRoute>
         <CrudUsers />
+      </AdminRoute>
+    )
+  },
+  {
+    path: '/groups',
+    element: (
+      <AdminRoute>
+        <Groups />
       </AdminRoute>
     )
   }

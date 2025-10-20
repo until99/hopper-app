@@ -1,4 +1,4 @@
-export interface IGroups {
+export interface IWorkspace {
   id: string;
   isReadOnly: boolean;
   isOnDedicatedCapacity: boolean;

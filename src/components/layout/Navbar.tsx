@@ -17,10 +17,13 @@ export default function Navbar() {
                         <li>
                             <Link to="/users">Users</Link>
                         </li>
+                        <li>
+                            <Link to="/groups">Groups</Link>
+                        </li>
                     </>
                 )}
                 <li>
-                    <Link to="/groups">Groups</Link>
+                    <Link to="/workspaces">Workspaces</Link>
                 </li>
             </ul>
         </nav>

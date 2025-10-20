@@ -19,7 +19,7 @@ const Login = () => {
     try {
       const success = await login(email, password)
       if (success) {
-        navigate('/groups')
+        navigate('/workspaces')
       } else {
         setError('Credenciais inválidas. Por favor, tente novamente.')
       }

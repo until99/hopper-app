@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 
-import type { IDashboard } from "../../interfaces/dashboard"
+import type { IDashboard } from "../../../interfaces/dashboard"
 import axios from "axios"
 
 
