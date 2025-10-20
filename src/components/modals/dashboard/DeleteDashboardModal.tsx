@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
-import Modal from './Modal';
-import '../../styles/UserModal.css';
+import Modal from '../Modal';
+import '../../../styles/UserModal.css';
 
 interface DeleteDashboardModalProps {
   isOpen: boolean;
