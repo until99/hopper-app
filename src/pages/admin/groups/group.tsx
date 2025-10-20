@@ -1,16 +1,16 @@
-import { useState } from "react";
+// import { useState } from "react";
 import Navbar from "../../../components/layout/Navbar"
 
-interface IGroup {
-    id: string;
-    name: string;
-    description: string;
-    active: boolean;
-}
+// interface IGroup {
+//     id: string;
+//     name: string;
+//     description: string;
+//     active: boolean;
+// }
 
 export default function Groups() {
-    const [groups, setGroups] = useState<IGroup[]>([]);
-    const [loading, setLoading] = useState(true);
+    // const [groups, setGroups] = useState<IGroup[]>([]);
+    // const [loading, setLoading] = useState(true);
 
     return <>
         <Navbar />
