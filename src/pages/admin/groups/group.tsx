@@ -9,8 +9,8 @@ interface IGroup {
 }
 
 export default function Groups() {
-    const [groups, setGroups] = useState<IGroup[]>([]);
-    const [loading, setLoading] = useState(true);
+    // const [groups, setGroups] = useState<IGroup[]>([]);
+    // const [loading, setLoading] = useState(true);
 
     return <>
         <Navbar />
