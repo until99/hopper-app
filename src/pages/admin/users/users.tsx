@@ -93,7 +93,7 @@ export default function CrudUsers() {
                 <tbody>
                     {loading ? (
                         <tr>
-                            <td colSpan={6}>Loading...</td>
+                            <td colSpan={6}>Thinking...</td>
                         </tr>
                     ) : (
                         users?.users.map((user) => (

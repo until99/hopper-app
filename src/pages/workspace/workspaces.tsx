@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
-import type { IGroups } from "../../interfaces/dashboard"
+import type { IWorkspace } from "../../interfaces/dashboard"
 import axios from "axios"
 
 
 
-function Groups() {
-    const [groups, setGroups] = useState<IGroups[]>([])
+function Workspaces() {
+    const [workspaces, setWorkspaces] = useState<IWorkspace[]>([])
     const [loading, setLoading] = useState(true)
 
     const handleLogout = () => {
@@ -33,7 +33,7 @@ function Groups() {
                 }
 
                 else {
-                    setGroups(response.data.groups)
+                    setWorkspaces(response.data.groups)
                     setLoading(false);
                 }
 
@@ -43,29 +43,28 @@ function Groups() {
             });
     }, [])
 
-
-    if (loading) {
-        return <p>Thinking...</p>
-    }
-
     return (
         <>
             <nav>
                 <button onClick={handleLogout}>Logout</button>
             </nav>
 
-            <h1>Groups</h1>
+            <h1>Workspaces</h1>
             <ul>
-                {groups.map((group) => (
-                    <li key={group.id}>
-                        <Link to={`/groups/${group.id}/dashboards`}>
-                            <h2>{group.name}</h2>
-                        </Link>
-                    </li>
-                ))}
+                {loading ? (
+                    <p>Loading...</p>
+                ) : (
+                    workspaces.map((workspace) => (
+                        <li key={workspace.id}>
+                            <Link to={`/workspaces/${workspace.id}/dashboards`}>
+                                <h2>{workspace.name}</h2>
+                            </Link>
+                        </li>
+                    ))
+                )}
             </ul>
         </>
     )
 }
 
-export default Groups
+export default Workspaces
