@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
-import Modal from './Modal';
-import '../../styles/UserModal.css';
+import Modal from '../Modal';
+import '../../../styles/UserModal.css';
 
 interface DeleteUserModalProps {
   isOpen: boolean;
@@ -28,7 +28,7 @@ export default function DeleteUserModal({
     setError(null);
 
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/users/${userId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/user/${userId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
         },

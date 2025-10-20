@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import Modal from './Modal';
-import { type IUser } from '../../interfaces/user';
-import '../../styles/UserModal.css';
+import Modal from '../Modal';
+import { type IUser } from '../../../interfaces/user';
+import '../../../styles/UserModal.css';
 
 interface EditUserModalProps {
   isOpen: boolean;

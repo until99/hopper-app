@@ -1,9 +1,13 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { type IUser } from "../../../interfaces/user"
-import EditUserModal from "../../../components/modals/EditUserModal"
-import DeleteUserModal from "../../../components/modals/DeleteUserModal"
+
 import Navbar from "../../../components/layout/Navbar"
+
+import CreateUserModal from "../../../components/modals/user/CreateUserModal"
+import EditUserModal from "../../../components/modals/user/EditUserModal"
+import DeleteUserModal from "../../../components/modals/user/DeleteUserModal"
+
 
 interface IUserResponse {
     page: number
@@ -16,8 +20,11 @@ interface IUserResponse {
 export default function CrudUsers() {
     const [users, setUsers] = useState<IUserResponse>()
     const [loading, setLoading] = useState(true)
+
     const [editModalOpen, setEditModalOpen] = useState(false)
     const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+    const [createModalOpen, setCreateModalOpen] = useState(false)
+
     const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
     const [selectedUsername, setSelectedUsername] = useState("")
 
@@ -67,6 +74,10 @@ export default function CrudUsers() {
         }
     }
 
+    function openUserCreateModal() {
+        setCreateModalOpen(true)
+    }
+
     function handleUserUpdated() {
         fetchUsers()
     }
@@ -75,10 +86,17 @@ export default function CrudUsers() {
         fetchUsers()
     }
 
+    function handleUserCreated() {
+        fetchUsers()
+    }
+
     return (
         <>
             <Navbar />
             <h1>Users</h1>
+            <button onClick={openUserCreateModal}>Create New User</button>
+
+            <br /><br />
             <table>
                 <thead>
                     <tr>
@@ -112,6 +130,12 @@ export default function CrudUsers() {
                     )}
                 </tbody>
             </table>
+
+            <CreateUserModal
+                isOpen={createModalOpen}
+                onClose={() => setCreateModalOpen(false)}
+                onUserCreated={handleUserCreated}
+            />
 
             <EditUserModal
                 isOpen={editModalOpen}
