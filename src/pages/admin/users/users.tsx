@@ -92,7 +92,6 @@ export default function CrudUsers() {
 
     return (
         <>
-            <Navbar />
             <h1>Users</h1>
             <button onClick={openUserCreateModal}>Create New User</button>
 

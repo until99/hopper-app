@@ -10,14 +10,6 @@ function Workspaces() {
     const [workspaces, setWorkspaces] = useState<IWorkspace[]>([])
     const [loading, setLoading] = useState(true)
 
-    const handleLogout = () => {
-        localStorage.removeItem('authToken')
-        localStorage.removeItem('userId')
-
-        window.location.href = '/login'
-
-    }
-
     useEffect(() => {
         axios({
             method: "get",
@@ -45,10 +37,6 @@ function Workspaces() {
 
     return (
         <>
-            <nav>
-                <button onClick={handleLogout}>Logout</button>
-            </nav>
-
             <h1>Workspaces</h1>
             <ul>
                 {loading ? (

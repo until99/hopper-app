@@ -72,7 +72,6 @@ function CrudDashboard() {
 
     return (
         <>
-            <Navbar />
             <h1>Dashboards</h1>
             <table>
                 <thead>

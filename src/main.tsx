@@ -23,6 +23,7 @@ import CrudUsers from './pages/admin/users/users'
 
 // Groups
 import Groups from './pages/admin/groups/group'
+import GroupUsers from './pages/admin/groups/users/groupUser'
 
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
@@ -72,6 +73,22 @@ const router = createBrowserRouter([
     element: (
       <AdminRoute>
         <Groups />
+      </AdminRoute>
+    )
+  },
+  {
+    path: '/admin/groups/:groupId/users',
+    element: (
+      <AdminRoute>
+        <GroupUsers />
+      </AdminRoute>
+    )
+  },
+  {
+    path: '/admin/groups/:groupId/dashboards',
+    element: (
+      <AdminRoute>
+        <NotFoundPage />
       </AdminRoute>
     )
   }
