@@ -11,18 +11,10 @@ function Dashboards() {
   const [loading, setLoading] = useState(true)
   const { groupId } = useParams()
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken')
-    localStorage.removeItem('userId')
-
-    window.location.href = '/login'
-
-  }
-
   useEffect(() => {
     axios({
       method: "get",
-      url: `${import.meta.env.VITE_API_URL}/groups/${groupId}/reports`,
+      url: `${import.meta.env.VITE_API_URL}/app/groups/${groupId}/dashboards`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`
       }
@@ -34,8 +26,7 @@ function Dashboards() {
         }
 
         else {
-
-          setDashboards(response.data.reports);
+          setDashboards(response.data);
           setLoading(false);
         }
 
@@ -47,30 +38,24 @@ function Dashboards() {
   }, [groupId])
 
 
-  if (loading) {
-    return <p>Thinking...</p>
-  }
+
 
   return (
     <>
-      <nav>
-        <button onClick={handleLogout}>Logout</button>
-      </nav>
-
       <h1>Dashboards</h1>
-      {dashboards.length === 0 ? (
-        <p>No dashboards available.</p>
-      ) : (
-        <ul>
-          {dashboards.map((dashboard) => (
+      <ul>
+        {loading ? (
+          <p>Thinking...</p>
+        ) : (
+          dashboards.map((dashboard) => (
             <li key={dashboard.id}>
-              <Link to={`/groups/${groupId}/dashboards/${dashboard.id}`}>
+              <Link to={`${dashboard.id}`}>
                 <h2>{dashboard.name}</h2>
               </Link>
             </li>
-          ))}
-        </ul>
-      )}
+          ))
+        )}
+      </ul>
     </>
   )
 }

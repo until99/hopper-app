@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import Navbar from './layout/Navbar'
 
 interface AdminRouteProps {
     children: React.ReactElement
@@ -20,7 +21,7 @@ const AdminRoute = ({ children }: AdminRouteProps) => {
         return <Navigate to="/groups" replace />
     }
 
-    return children
+    return <><Navbar />{children}</>
 }
 
 export default AdminRoute

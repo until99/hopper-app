@@ -2,8 +2,6 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { type IUser } from "../../../interfaces/user"
 
-import Navbar from "../../../components/layout/Navbar"
-
 import CreateUserModal from "../../../components/modals/user/CreateUserModal"
 import EditUserModal from "../../../components/modals/user/EditUserModal"
 import DeleteUserModal from "../../../components/modals/user/DeleteUserModal"
@@ -42,8 +40,6 @@ export default function CrudUsers() {
             }
 
             else {
-                console.log(response.data);
-
                 setLoading(false)
                 setUsers(response.data)
             }
@@ -92,7 +88,6 @@ export default function CrudUsers() {
 
     return (
         <>
-            <Navbar />
             <h1>Users</h1>
             <button onClick={openUserCreateModal}>Create New User</button>
 
