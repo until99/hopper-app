@@ -2,8 +2,6 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { type IUser } from "../../../interfaces/user"
 
-import Navbar from "../../../components/layout/Navbar"
-
 import CreateUserModal from "../../../components/modals/user/CreateUserModal"
 import EditUserModal from "../../../components/modals/user/EditUserModal"
 import DeleteUserModal from "../../../components/modals/user/DeleteUserModal"
