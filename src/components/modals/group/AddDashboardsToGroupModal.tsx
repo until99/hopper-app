@@ -3,53 +3,44 @@ import axios from 'axios';
 import Modal from '../Modal';
 import '../../../styles/UserModal.css';
 
-interface IUser {
+interface IDashboard {
     id: string;
-    username: string;
-    email: string;
-    role: "admin" | "user";
-    active: boolean;
+    datasetId: string;
+    description: string | null;
+    groupId: string;
+    groupName: string;
+    name: string;
 }
 
-interface IGroupUser {
-    id: string;
-    user_id: string;
-    username: string;
-    email: string;
-    role: "admin" | "user";
-    active: boolean;
-    created: string;
-    updated: string;
-}
-
-interface AddUsersToGroupModalProps {
+interface AddDashboardsToGroupModalProps {
     isOpen: boolean;
     onClose: () => void;
     groupId: string | null;
     groupName: string;
-    onUsersAdded: () => void;
+    onDashboardsAdded: () => void;
 }
 
-export default function AddUsersToGroupModal({
+export default function AddDashboardsToGroupModal({
     isOpen,
     onClose,
     groupId,
     groupName,
-    onUsersAdded,
-}: AddUsersToGroupModalProps) {
+    onDashboardsAdded,
+}: AddDashboardsToGroupModalProps) {
     const [loading, setLoading] = useState(false);
     const [loadingData, setLoadingData] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set());
+    const [selectedDashboards, setSelectedDashboards] = useState<Set<string>>(new Set());
     const [searchTerm, setSearchTerm] = useState('');
-    const [allUsers, setAllUsers] = useState<IUser[]>([]);
-    const [groupUsers, setGroupUsers] = useState<IGroupUser[]>([]);
+    const [allDashboards, setAllDashboards] = useState<IDashboard[]>([]);
+    const [groupDashboards, setGroupDashboards] = useState<IDashboard[]>([]);
 
     useEffect(() => {
         if (isOpen && groupId) {
             fetchData();
         } else if (!isOpen) {
             setSearchTerm('');
+            setSelectedDashboards(new Set());
             setError(null);
         }
     }, [isOpen, groupId]);
@@ -58,9 +49,9 @@ export default function AddUsersToGroupModal({
         setLoadingData(true);
         setError(null);
         try {
-            const [usersResponse, groupUsersResponse] = await Promise.all([
+            const [dashboardsResponse, groupDashboardsResponse] = await Promise.all([
                 axios.get(
-                    `${import.meta.env.VITE_API_URL}/users`,
+                    `${import.meta.env.VITE_API_URL}/dashboards`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -68,7 +59,7 @@ export default function AddUsersToGroupModal({
                     }
                 ),
                 axios.get(
-                    `${import.meta.env.VITE_API_URL}/app/groups/${groupId}/users`,
+                    `${import.meta.env.VITE_API_URL}/app/groups/${groupId}/dashboards`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -77,11 +68,8 @@ export default function AddUsersToGroupModal({
                 )
             ]);
 
-            // Armazena todos os usuários da API
-            setAllUsers(usersResponse.data.users || []);
-
-            // Armazena os usuários que já estão no grupo
-            setGroupUsers(groupUsersResponse.data || []);
+            setAllDashboards(dashboardsResponse.data.dashboards || []);
+            setGroupDashboards(groupDashboardsResponse.data || []);
 
         } catch (err) {
             console.error('Error fetching data:', err);
@@ -91,25 +79,20 @@ export default function AddUsersToGroupModal({
         }
     };
 
-    // Filtra usuários disponíveis removendo os que já estão no grupo
-    const availableUsers = useMemo(() => {
-        // Cria um Set com os user_id dos usuários que já estão no grupo
-        const groupUserIds = new Set(groupUsers.map(gu => gu.user_id));
+    const availableDashboards = useMemo(() => {
+        const groupDashboardIds = new Set(groupDashboards.map(gd => gd.id));
+        const filtered = allDashboards.filter(dashboard => !groupDashboardIds.has(dashboard.id));
 
-        // Filtra os usuários removendo aqueles que já estão no grupo
-        const filtered = allUsers.filter(user => !groupUserIds.has(user.id));
-
-        // Aplica o filtro de busca se houver termo de pesquisa
         if (searchTerm.trim() === '') {
             return filtered;
         }
 
         const lowerSearchTerm = searchTerm.toLowerCase();
-        return filtered.filter(user =>
-            user.username.toLowerCase().includes(lowerSearchTerm) ||
-            user.email.toLowerCase().includes(lowerSearchTerm)
+        return filtered.filter(dashboard =>
+            dashboard.name.toLowerCase().includes(lowerSearchTerm) ||
+            (dashboard.description && dashboard.description.toLowerCase().includes(lowerSearchTerm))
         );
-    }, [allUsers, groupUsers, searchTerm]);
+    }, [allDashboards, groupDashboards, searchTerm]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -117,11 +100,11 @@ export default function AddUsersToGroupModal({
         setLoading(true);
         setError(null);
         try {
-            const usersArray = Array.from(selectedUsers);
-            for (const userId of usersArray) {
+            const dashboardsArray = Array.from(selectedDashboards);
+            for (const dashboardId of dashboardsArray) {
                 await axios.post(
-                    `${import.meta.env.VITE_API_URL}/app/groups/${groupId}/users/${userId}`,
-                    { userId },
+                    `${import.meta.env.VITE_API_URL}/app/groups/${groupId}/dashboards/${dashboardId}`,
+                    { dashboardId },
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -129,23 +112,23 @@ export default function AddUsersToGroupModal({
                     }
                 );
             }
-            onUsersAdded();
+            onDashboardsAdded();
             onClose();
         } catch (err) {
-            console.error('Error adding users to group:', err);
-            setError('Erro ao adicionar usuários ao grupo');
+            console.error('Error adding dashboards to group:', err);
+            setError('Erro ao adicionar dashboards ao grupo');
         } finally {
             setLoading(false);
         }
     };
 
-    const handleUserToggle = (userId: string) => {
-        setSelectedUsers((prev) => {
+    const handleDashboardToggle = (dashboardId: string) => {
+        setSelectedDashboards((prev) => {
             const newSet = new Set(prev);
-            if (newSet.has(userId)) {
-                newSet.delete(userId);
+            if (newSet.has(dashboardId)) {
+                newSet.delete(dashboardId);
             } else {
-                newSet.add(userId);
+                newSet.add(dashboardId);
             }
             return newSet;
         });
@@ -159,7 +142,7 @@ export default function AddUsersToGroupModal({
         <Modal
             isOpen={isOpen}
             onClose={handleClose}
-            title={`Add user to group: ${groupName}`}
+            title={`Add dashboards to group: ${groupName}`}
         >
             <form onSubmit={handleSubmit} className="user-form">
                 {error && <div className="error-message">{error}</div>}
@@ -177,7 +160,7 @@ export default function AddUsersToGroupModal({
                 </div>
 
                 <div className="form-group">
-                    <label>Users:</label>
+                    <label>Dashboards:</label>
                     <div
                         style={{
                             maxHeight: '300px',
@@ -189,17 +172,17 @@ export default function AddUsersToGroupModal({
                     >
                         {loadingData ? (
                             <p style={{ color: '#666', textAlign: 'center' }}>
-                                Retrieving users...
+                                Retrieving dashboards...
                             </p>
-                        ) : availableUsers.length === 0 ? (
+                        ) : availableDashboards.length === 0 ? (
                             <p style={{ color: '#666', textAlign: 'center' }}>
-                                No users available
+                                No dashboards available
                             </p>
                         ) : (
-                            availableUsers.map((user) => {
+                            availableDashboards.map((dashboard) => {
                                 return (
                                     <label
-                                        key={user.id}
+                                        key={dashboard.id}
                                         className="checkbox-label"
                                         style={{
                                             display: 'block',
@@ -210,14 +193,16 @@ export default function AddUsersToGroupModal({
                                     >
                                         <input
                                             type="checkbox"
-                                            onChange={() => handleUserToggle(user.id)}
+                                            checked={selectedDashboards.has(dashboard.id)}
+                                            onChange={() => handleDashboardToggle(dashboard.id)}
                                             disabled={loading}
                                         />
                                         <span style={{ marginLeft: '8px' }}>
-                                            <strong>{user.username}</strong> ({user.email})
-                                            {!user.active && (
-                                                <span style={{ color: '#999' }}> - Inativo</span>
+                                            <strong>{dashboard.name}</strong>
+                                            {dashboard.groupName && (
+                                                <span style={{ color: '#666' }}> - {dashboard.groupName}</span>
                                             )}
+                                            <br />
                                         </span>
                                     </label>
                                 );
@@ -225,9 +210,9 @@ export default function AddUsersToGroupModal({
                         )}
                     </div>
 
-                    {selectedUsers.size > 0 && (
+                    {selectedDashboards.size > 0 && (
                         <p style={{ marginTop: '8px', color: '#666' }}>
-                            {selectedUsers.size} user(s) selected
+                            {selectedDashboards.size} dashboard(s) selected
                         </p>
                     )}
                 </div>

@@ -42,8 +42,6 @@ export default function CrudUsers() {
             }
 
             else {
-                console.log(response.data);
-
                 setLoading(false)
                 setUsers(response.data)
             }

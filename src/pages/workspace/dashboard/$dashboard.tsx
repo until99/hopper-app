@@ -67,7 +67,7 @@ function DashboardId() {
                 </li>
             </ul >
 
-            <Link to="/groups">Voltar ao Início</Link>
+            <Link to="/workspaces">Voltar ao Início</Link>
         </>
     )
 }

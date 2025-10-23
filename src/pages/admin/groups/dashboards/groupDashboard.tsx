@@ -1,24 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import AddUsersToGroupModal from "../../../../components/modals/group/AddUsersToGroupModal";
+import AddDashboardsToGroupModal from "../../../../components/modals/group/AddDashboardsToGroupModal";
 
-
-interface IUser {
+interface IDashboard {
     id: string;
-    user_id: string;
-    username: string;
-    email: string;
-    role: string;
-    active: boolean;
-    created: string;
-    updated: string;
+    datasetId: string;
+    description: string | null;
+    groupId: string;
+    groupName: string;
+    name: string;
 }
 
-export default function GroupUsers() {
-    const { groupId } = useParams()
+export default function GroupDashboards() {
+    const { groupId } = useParams();
 
-    const [users, setUsers] = useState<IUser[]>([]);
+    const [dashboards, setDashboards] = useState<IDashboard[]>([]);
     const [loading, setLoading] = useState(true);
     const [groupName, setGroupName] = useState<string>("");
 
@@ -26,7 +23,7 @@ export default function GroupUsers() {
 
     useEffect(() => {
         fetchGroupInfo();
-        fetchGroupUsers();
+        fetchGroupDashboards();
     }, [groupId]);
 
     const fetchGroupInfo = async () => {
@@ -50,10 +47,10 @@ export default function GroupUsers() {
         }
     }
 
-    const fetchGroupUsers = async () => {
+    const fetchGroupDashboards = async () => {
         try {
-            const response = await axios.get<IUser[]>(
-                `${import.meta.env.VITE_API_URL}/app/groups/${groupId}/users`,
+            const response = await axios.get<IDashboard[]>(
+                `${import.meta.env.VITE_API_URL}/app/groups/${groupId}/dashboards`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('authToken')}`
@@ -62,26 +59,25 @@ export default function GroupUsers() {
             );
 
             if (response.status !== 200) {
-                throw new Error("Failed to fetch group users")
+                throw new Error("Failed to fetch group dashboards")
             }
 
             setLoading(false);
-            setUsers(response.data);
-
+            setDashboards(response.data);
         }
         catch (error) {
-            console.error("Error fetching group users:", error);
+            console.error("Error fetching group dashboards:", error);
         }
     }
 
-    const handleRemoveUser = async (userId: string) => {
+    const handleRemoveDashboard = async (dashboardId: string) => {
         if (!confirm("Are you sure?")) {
             return;
         }
 
         try {
             const response = await axios.delete(
-                `${import.meta.env.VITE_API_URL}/app/groups/${groupId}/users/${userId}`,
+                `${import.meta.env.VITE_API_URL}/app/groups/${groupId}/dashboards/${dashboardId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('authToken')}`
@@ -89,56 +85,52 @@ export default function GroupUsers() {
                 }
             );
 
-            if (response.status === 200 || response.data.message) {
-                fetchGroupUsers();
+            if (response.status === 200) {
+                fetchGroupDashboards();
             }
-
         } catch (error: any) {
-            console.error("Error removing user from group:", error);
+            console.error("Error removing dashboard from group:", error);
+            alert("Failed to remove dashboard from group");
         }
     }
 
     return <>
         {/* Modals */}
-        <AddUsersToGroupModal
+        <AddDashboardsToGroupModal
             isOpen={isCreateModalOpen}
             onClose={() => setIsCreateModalOpen(false)}
             groupId={groupId || null}
             groupName={groupName}
-            onUsersAdded={fetchGroupUsers}
+            onDashboardsAdded={fetchGroupDashboards}
         />
 
-        <h1>Group Users</h1>
+        <h1>Group Dashboards</h1>
 
-        <button onClick={() => setIsCreateModalOpen(true)}>Adicionar Usuários</button>
+        <button onClick={() => setIsCreateModalOpen(true)}>Adicionar Dashboards</button>
 
         <br /><br />
 
         <table>
             <thead>
                 <tr>
-                    <th>User ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Status</th>
+                    <th>Dashboard ID</th>
+                    <th>Name</th>
+                    <th>Group</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {loading ? (
                     <tr>
-                        <td colSpan={6}>Loading...</td>
+                        <td colSpan={5}>Loading...</td>
                     </tr>
-                ) : (users && users.map(user => (
-                    <tr key={user.id}>
-                        <td>{user.user_id}</td>
-                        <td>{user.username}</td>
-                        <td>{user.email}</td>
-                        <td>{user.role}</td>
-                        <td>{user.active ? "Active" : "Inactive"}</td>
+                ) : (dashboards && dashboards.map(dashboard => (
+                    <tr key={dashboard.id}>
+                        <td>{dashboard.id}</td>
+                        <td>{dashboard.name}</td>
+                        <td>{dashboard.groupName}</td>
                         <td>
-                            <button onClick={() => handleRemoveUser(user.user_id)}>
+                            <button onClick={() => handleRemoveDashboard(dashboard.id)}>
                                 Remover
                             </button>
                         </td>
