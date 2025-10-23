@@ -11,14 +11,6 @@ function Dashboards() {
   const [loading, setLoading] = useState(true)
   const { groupId } = useParams()
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken')
-    localStorage.removeItem('userId')
-
-    window.location.href = '/login'
-
-  }
-
   useEffect(() => {
     axios({
       method: "get",
