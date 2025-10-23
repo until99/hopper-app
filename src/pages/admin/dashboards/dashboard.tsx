@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import DeleteDashboardModal from "../../../components/modals/dashboard/DeleteDashboardModal";
-import Navbar from "../../../components/layout/Navbar";
 
 interface IDashboardResponse {
     dashboards: Array<{
