@@ -31,6 +31,10 @@ export default function Navbar() {
                             <li>
                                 <Link to="/groups">Groups</Link>
                             </li>
+                            <p>|</p>
+                            <li>
+                                <Link to="/pipelines">Pipelines</Link>
+                            </li>
                         </>
                     )}
                     <p>|</p>

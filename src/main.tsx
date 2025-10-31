@@ -25,6 +25,7 @@ import CrudUsers from './pages/admin/users/users'
 import Groups from './pages/admin/groups/group'
 import GroupUsers from './pages/admin/groups/users/groupUser'
 import GroupDashboard from './pages/admin/groups/dashboards/groupDashboard'
+import Pipelines from './pages/admin/pipelines/pipelines'
 
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
@@ -90,6 +91,14 @@ const router = createBrowserRouter([
     element: (
       <AdminRoute>
         <GroupDashboard />
+      </AdminRoute>
+    )
+  },
+  {
+    path: '/pipelines/',
+    element: (
+      <AdminRoute>
+        <Pipelines />
       </AdminRoute>
     )
   }
