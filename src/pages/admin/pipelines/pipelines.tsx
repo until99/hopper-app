@@ -18,7 +18,6 @@ export default function Pipelines() {
     // Modal states
     const [isLinkDashboardModalOpen, setIsLinkDashboardModalOpen] = useState(false);
     const [selectedPipelineId, setSelectedPipelineId] = useState<string | null>(null);
-    const [selectedPipelineName, setSelectedPipelineName] = useState("");
 
     useEffect(() => {
         fetchPipelines();
@@ -66,16 +65,14 @@ export default function Pipelines() {
         }
     };
 
-    const handleOpenLinkDashboardModal = (pipelineId: string, pipelineName: string) => {
+    const handleOpenLinkDashboardModal = (pipelineId: string) => {
         setSelectedPipelineId(pipelineId);
-        setSelectedPipelineName(pipelineName);
         setIsLinkDashboardModalOpen(true);
     };
 
     const handleCloseModals = () => {
         setIsLinkDashboardModalOpen(false);
         setSelectedPipelineId(null);
-        setSelectedPipelineName("");
     };
 
     const handleDashboardLinked = () => { fetchPipelines(); };
@@ -116,7 +113,7 @@ export default function Pipelines() {
                                 <td>{pipeline.description}</td>
                                 <td>{pipeline.timetable_description}</td>
                                 <td style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                                    <button onClick={() => handleOpenLinkDashboardModal(pipeline.id, pipeline.id)}>Vincular Dashboard</button>
+                                    <button onClick={() => handleOpenLinkDashboardModal(pipeline.id)}>Vincular Dashboard</button>
                                 </td>
                             </tr>
                         ))
