@@ -128,10 +128,6 @@ function DashboardId() {
                 </li>
             </ul>
 
-            {/* Diagnóstico: logar role do usuário e pipelineAssociated */}
-            {console.log("Role do usuário:", (typeof isAdmin === 'function' ? isAdmin() : isAdmin))}
-            {console.log("pipelineAssociated:", pipelineAssociated)}
-            {/* Botão de refresh de pipeline no canto inferior esquerdo, só se houver pipeline associado e usuário for admin */}
             {pipelineAssociated && isAdmin() && (
                 <div style={{ position: "fixed", left: 24, bottom: 24, zIndex: 1000 }}>
                     <button
