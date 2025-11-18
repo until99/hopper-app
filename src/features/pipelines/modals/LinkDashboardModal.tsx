@@ -84,7 +84,7 @@ const LinkDashboardModal: React.FC<LinkDashboardModalProps> = ({ isOpen, onClose
             setLoading(false);
             onDashboardLinked();
             onClose();
-        } catch (err: any) {
+        } catch {
             setLoading(false);
             setError("Erro ao vincular dashboard.");
         }

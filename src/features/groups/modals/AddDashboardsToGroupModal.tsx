@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { groupsService } from '../services/groupsApiService';
 import { dashboardService } from '../../dashboard/services/dashboardService';
 import Modal from '../../../shared/components/Modal';
@@ -36,17 +36,7 @@ export default function AddDashboardsToGroupModal({
     const [allDashboards, setAllDashboards] = useState<IDashboard[]>([]);
     const [groupDashboards, setGroupDashboards] = useState<IDashboard[]>([]);
 
-    useEffect(() => {
-        if (isOpen && groupId) {
-            fetchData();
-        } else if (!isOpen) {
-            setSearchTerm('');
-            setSelectedDashboards(new Set());
-            setError(null);
-        }
-    }, [isOpen, groupId]);
-
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         if (!groupId) return;
         
         setLoadingData(true);
@@ -60,13 +50,22 @@ export default function AddDashboardsToGroupModal({
             setAllDashboards(dashboardsData.dashboards || []);
             setGroupDashboards(groupDashboardsData || []);
 
-        } catch (err) {
-            console.error('Error fetching data:', err);
+        } catch {
             setError('Erro ao carregar dados');
         } finally {
             setLoadingData(false);
         }
-    };
+    }, [groupId]);
+
+    useEffect(() => {
+        if (isOpen && groupId) {
+            fetchData();
+        } else if (!isOpen) {
+            setSearchTerm('');
+            setSelectedDashboards(new Set());
+            setError(null);
+        }
+    }, [isOpen, groupId, fetchData]);
 
     const availableDashboards = useMemo(() => {
         const groupDashboardIds = new Set(groupDashboards.map(gd => gd.id));

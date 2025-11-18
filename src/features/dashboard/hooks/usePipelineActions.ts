@@ -13,7 +13,7 @@ export const usePipelineActions = () => {
         try {
             await dashboardService.runPipeline(dashboardId);
             setRefreshLoading(prev => ({ ...prev, [dashboardId]: false }));
-        } catch (err) {
+        } catch {
             setRefreshLoading(prev => ({ ...prev, [dashboardId]: false }));
             setRefreshError(prev => ({ ...prev, [dashboardId]: 'Erro ao rodar pipeline.' }));
         }
@@ -26,7 +26,7 @@ export const usePipelineActions = () => {
             await dashboardService.unlinkPipeline(dashboardId);
             setUnlinkLoading(prev => ({ ...prev, [dashboardId]: false }));
             onSuccess?.();
-        } catch (err) {
+        } catch {
             setUnlinkLoading(prev => ({ ...prev, [dashboardId]: false }));
             setUnlinkError(prev => ({ ...prev, [dashboardId]: 'Erro ao desvincular pipeline.' }));
         }

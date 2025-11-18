@@ -29,7 +29,7 @@ function DashboardId() {
             await runPipeline(dashboardId);
             setRefreshSuccess("Pipeline executado com sucesso!");
             setTimeout(() => setRefreshSuccess(""), 5000);
-        } catch (err) {
+        } catch {
             // Erro já tratado no hook
         }
     };

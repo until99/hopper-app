@@ -24,7 +24,7 @@ const Login = () => {
       } else {
         setError('Credenciais inválidas. Por favor, tente novamente.');
       }
-    } catch (err) {
+    } catch {
       setError('Erro ao fazer login. Tente novamente.');
     } finally {
       setLoading(false);
