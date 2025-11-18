@@ -9,12 +9,12 @@ expect.extend(matchers)
 // Cleanup after each test
 afterEach(() => {
   cleanup()
-})
+});
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: vi.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation((query: string) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -24,10 +24,10 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   })),
-})
+});
 
 // Mock IntersectionObserver
-global.IntersectionObserver = class IntersectionObserver {
+(globalThis as any).IntersectionObserver = class IntersectionObserver {
   constructor() {}
   disconnect() {}
   observe() {}
@@ -35,7 +35,7 @@ global.IntersectionObserver = class IntersectionObserver {
     return []
   }
   unobserve() {}
-} as any
+}
 
 // Mock localStorage
 const localStorageMock = {
@@ -44,7 +44,7 @@ const localStorageMock = {
   removeItem: vi.fn(),
   clear: vi.fn(),
 }
-global.localStorage = localStorageMock as any
+;(globalThis as any).localStorage = localStorageMock
 
 // Mock sessionStorage
 const sessionStorageMock = {
@@ -53,4 +53,4 @@ const sessionStorageMock = {
   removeItem: vi.fn(),
   clear: vi.fn(),
 }
-global.sessionStorage = sessionStorageMock as any
+;(globalThis as any).sessionStorage = sessionStorageMock

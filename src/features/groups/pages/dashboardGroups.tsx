@@ -4,8 +4,8 @@ import GroupCard from '../components/GroupCard'
 
 const DashboardGroups = () => {
 
-    const [loading, setLoading] = useState(true)
-    const [groups, setGroups] = useState<IGroup[]>([])
+    const [loading] = useState(true)
+    const [groups] = useState<IGroup[]>([])
 
     return (
         <>
