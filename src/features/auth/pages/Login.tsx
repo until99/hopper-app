@@ -32,19 +32,19 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-primary-50 to-primary-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 px-4 py-8 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-600 rounded-2xl mb-4 shadow-lg">
-            <span className="text-white font-bold text-3xl">H</span>
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-primary-600 rounded-2xl mb-4 shadow-lg">
+            <span className="text-white font-bold text-2xl sm:text-3xl">H</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to Hopper</h1>
-          <p className="text-gray-600">Sign in to access your dashboard</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Welcome to Hopper</h1>
+          <p className="text-sm sm:text-base text-gray-600">Sign in to access your dashboard</p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Sign In</CardTitle>
+            <CardTitle className="text-lg sm:text-xl">Sign In</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -62,6 +62,7 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="your@email.com"
+                autoComplete="email"
               />
 
               <Input
@@ -72,6 +73,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="••••••••"
+                autoComplete="current-password"
               />
 
               <Button
@@ -86,7 +88,7 @@ const Login = () => {
           </CardContent>
         </Card>
 
-        <p className="text-center text-sm text-gray-600 mt-6">
+        <p className="text-center text-xs sm:text-sm text-gray-600 mt-4 sm:mt-6">
           Don't have an account? Contact your administrator
         </p>
       </div>

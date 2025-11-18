@@ -50,16 +50,16 @@ export default function Modal({ isOpen, onClose, children, title, size = 'md' }:
 
   return createPortal(
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 transition-opacity"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4 transition-opacity"
       onClick={onClose}
     >
       <div 
-        className={`relative w-full ${sizeClasses[size]} bg-white rounded-xl shadow-2xl transform transition-all`}
+        className={`relative w-full ${sizeClasses[size]} bg-white rounded-t-2xl sm:rounded-xl shadow-2xl transform transition-all max-h-[90vh] sm:max-h-[85vh] flex flex-col`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-          {title && <h2 className="text-xl font-semibold text-gray-900">{title}</h2>}
+        <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-gray-200 shrink-0">
+          {title && <h2 className="text-lg sm:text-xl font-semibold text-gray-900">{title}</h2>}
           <button 
             className="ml-auto p-1 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors" 
             onClick={onClose} 
@@ -72,7 +72,7 @@ export default function Modal({ isOpen, onClose, children, title, size = 'md' }:
         </div>
         
         {/* Body */}
-        <div className="px-6 py-4">
+        <div className="px-4 sm:px-6 py-4 overflow-y-auto flex-1">
           {children}
         </div>
       </div>

@@ -42,7 +42,7 @@ function CrudDashboard() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8">
+        <div className="min-h-screen bg-gray-50 py-4 sm:py-6 lg:py-8">
             <DeleteDashboardModal
                 isOpen={deleteModalOpen}
                 onClose={handleCloseDeleteModal}
@@ -54,13 +54,13 @@ function CrudDashboard() {
             />
 
             <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="mb-8 flex items-center justify-between">
+                <div className="mb-6 sm:mb-8">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-3">
-                            <ChartBar className="w-8 h-8 text-primary-600" weight="bold" />
-                            Dashboards Management
+                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3">
+                            <ChartBar className="w-6 h-6 sm:w-8 sm:h-8 text-primary-600" weight="bold" />
+                            <span>Dashboards Management</span>
                         </h1>
-                        <p className="text-gray-600">Manage all Power BI dashboards and pipeline associations</p>
+                        <p className="text-sm sm:text-base text-gray-600">Manage all Power BI dashboards and pipeline associations</p>
                     </div>
                 </div>
 

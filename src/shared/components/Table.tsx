@@ -7,10 +7,14 @@ interface TableProps extends HTMLAttributes<HTMLTableElement> {
 
 export function Table({ children, className = '', ...props }: TableProps) {
   return (
-    <div className="overflow-x-auto">
-      <table className={`min-w-full divide-y divide-gray-200 ${className}`} {...props}>
-        {children}
-      </table>
+    <div className="overflow-x-auto -mx-4 sm:mx-0">
+      <div className="inline-block min-w-full align-middle">
+        <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+          <table className={`min-w-full divide-y divide-gray-200 ${className}`} {...props}>
+            {children}
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
@@ -62,7 +66,7 @@ interface TableHeadProps extends HTMLAttributes<HTMLTableCellElement> {
 export function TableHead({ children, className = '', ...props }: TableHeadProps) {
   return (
     <th
-      className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${className}`}
+      className={`px-3 py-3 sm:px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${className}`}
       {...props}
     >
       {children}
@@ -77,7 +81,7 @@ interface TableCellProps extends HTMLAttributes<HTMLTableCellElement> {
 
 export function TableCell({ children, className = '', ...props }: TableCellProps) {
   return (
-    <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${className}`} {...props}>
+    <td className={`px-3 py-4 sm:px-6 text-sm text-gray-900 ${className}`} {...props}>
       {children}
     </td>
   );

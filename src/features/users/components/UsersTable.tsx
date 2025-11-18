@@ -13,7 +13,9 @@ export const UsersTable = ({ users, loading, onEdit, onDelete }: UsersTableProps
     if (loading) {
         return (
             <Card>
-                <Loading message="Loading users..." />
+                <div className="p-4 sm:p-6">
+                    <Loading message="Loading users..." />
+                </div>
             </Card>
         );
     }
@@ -21,10 +23,10 @@ export const UsersTable = ({ users, loading, onEdit, onDelete }: UsersTableProps
     if (!users || users.length === 0) {
         return (
             <Card>
-                <div className="text-center py-12">
-                    <User className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-1">No users found</h3>
-                    <p className="text-gray-500">Create your first user to get started</p>
+                <div className="text-center py-8 sm:py-12 px-4">
+                    <User className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto mb-3 sm:mb-4" />
+                    <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-1">No users found</h3>
+                    <p className="text-sm sm:text-base text-gray-500">Create your first user to get started</p>
                 </div>
             </Card>
         );
@@ -32,77 +34,98 @@ export const UsersTable = ({ users, loading, onEdit, onDelete }: UsersTableProps
 
     return (
         <Card>
-            <Table>
-                <TableHeader>
-                    <tr>
-                        <TableHead>User</TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead>Role</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
-                    </tr>
-                </TableHeader>
-                <TableBody>
-                    {users.map((user) => (
-                        <TableRow key={user.id}>
-                            <TableCell>
-                                <div className="flex items-center gap-3">
-                                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary-100">
-                                        <User className="w-5 h-5 text-primary-600" weight="bold" />
+            <div className="overflow-x-auto">
+                <Table>
+                    <TableHeader>
+                        <tr>
+                            <TableHead>User</TableHead>
+                            <TableHead className="hidden lg:table-cell">Email</TableHead>
+                            <TableHead className="hidden md:table-cell">Role</TableHead>
+                            <TableHead className="hidden sm:table-cell">Status</TableHead>
+                            <TableHead className="text-right">Actions</TableHead>
+                        </tr>
+                    </TableHeader>
+                    <TableBody>
+                        {users.map((user) => (
+                            <TableRow key={user.id}>
+                                <TableCell>
+                                    <div className="flex items-center gap-2 sm:gap-3">
+                                        <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary-100">
+                                            <User className="w-4 h-4 sm:w-5 sm:h-5 text-primary-600" weight="bold" />
+                                        </div>
+                                        <div>
+                                            <div className="font-medium text-gray-900 text-sm sm:text-base">{user.username}</div>
+                                            <div className="text-xs text-gray-500 truncate max-w-[150px] sm:max-w-none">ID: {user.id}</div>
+                                            {/* Show email on mobile */}
+                                            <div className="lg:hidden flex items-center gap-1 text-xs text-gray-600 mt-1">
+                                                <EnvelopeSimple className="w-3 h-3" />
+                                                <span className="truncate">{user.email}</span>
+                                            </div>
+                                            {/* Show role and status on mobile/tablet */}
+                                            <div className="md:hidden flex items-center gap-2 mt-1.5">
+                                                {user.role === "admin" ? (
+                                                    <Badge variant="primary" size="sm" className="inline-flex items-center gap-1">
+                                                        <ShieldCheck className="w-3 h-3" weight="bold" />
+                                                        <span className="text-xs">Admin</span>
+                                                    </Badge>
+                                                ) : (
+                                                    <Badge variant="default" size="sm">User</Badge>
+                                                )}
+                                                <Badge variant={user.active ? "success" : "default"} size="sm">
+                                                    {user.active ? "Active" : "Inactive"}
+                                                </Badge>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div className="font-medium text-gray-900">{user.username}</div>
-                                        <div className="text-sm text-gray-500">ID: {user.id}</div>
+                                </TableCell>
+                                <TableCell className="hidden lg:table-cell">
+                                    <div className="flex items-center gap-2 text-gray-600 text-sm">
+                                        <EnvelopeSimple className="w-4 h-4" />
+                                        <span>{user.email}</span>
                                     </div>
-                                </div>
-                            </TableCell>
-                            <TableCell>
-                                <div className="flex items-center gap-2 text-gray-600">
-                                    <EnvelopeSimple className="w-4 h-4" />
-                                    <span>{user.email}</span>
-                                </div>
-                            </TableCell>
-                            <TableCell>
-                                {user.role === "admin" ? (
-                                    <Badge variant="primary" className="inline-flex items-center gap-1">
-                                        <ShieldCheck className="w-3.5 h-3.5" weight="bold" />
-                                        <span>Admin</span>
+                                </TableCell>
+                                <TableCell className="hidden md:table-cell">
+                                    {user.role === "admin" ? (
+                                        <Badge variant="primary" className="inline-flex items-center gap-1">
+                                            <ShieldCheck className="w-3.5 h-3.5" weight="bold" />
+                                            <span>Admin</span>
+                                        </Badge>
+                                    ) : (
+                                        <Badge variant="default">User</Badge>
+                                    )}
+                                </TableCell>
+                                <TableCell className="hidden sm:table-cell">
+                                    <Badge variant={user.active ? "success" : "default"}>
+                                        {user.active ? "Active" : "Inactive"}
                                     </Badge>
-                                ) : (
-                                    <Badge variant="default">User</Badge>
-                                )}
-                            </TableCell>
-                            <TableCell>
-                                <Badge variant={user.active ? "success" : "default"}>
-                                    {user.active ? "Active" : "Inactive"}
-                                </Badge>
-                            </TableCell>
-                            <TableCell className="text-right">
-                                <div className="flex items-center justify-end gap-2">
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() => onEdit(user.id, user.username)}
-                                        className="inline-flex items-center gap-1.5"
-                                    >
-                                        <PencilSimple className="w-4 h-4" />
-                                        <span>Edit</span>
-                                    </Button>
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() => onDelete(user.id, user.username)}
-                                        className="inline-flex items-center gap-1.5 text-red-600 hover:text-red-700 hover:bg-red-50"
-                                    >
-                                        <Trash className="w-4 h-4" />
-                                        <span>Delete</span>
-                                    </Button>
-                                </div>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                                </TableCell>
+                                <TableCell className="text-right">
+                                    <div className="flex items-center justify-end gap-1 sm:gap-2">
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => onEdit(user.id, user.username)}
+                                            className="inline-flex items-center gap-1 sm:gap-1.5 p-1.5 sm:p-2"
+                                        >
+                                            <PencilSimple className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                            <span className="hidden lg:inline text-sm">Edit</span>
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => onDelete(user.id, user.username)}
+                                            className="inline-flex items-center gap-1 sm:gap-1.5 text-red-600 hover:text-red-700 hover:bg-red-50 p-1.5 sm:p-2"
+                                        >
+                                            <Trash className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                            <span className="hidden lg:inline text-sm">Delete</span>
+                                        </Button>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
         </Card>
     );
 };

@@ -7,3 +7,4 @@ export { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '.
 export { Loading, PageLoading } from './Loading';
 export { default as Modal } from './Modal';
 export { default as Notification } from './Notification';
+export { PageHeader, PageContent, EmptyState } from './PageComponents';
