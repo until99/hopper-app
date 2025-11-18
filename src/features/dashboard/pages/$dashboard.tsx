@@ -115,7 +115,7 @@ function DashboardId() {
 
                 {/* Dashboard Embed */}
                 <Card className="overflow-hidden">
-                    <div className="bg-gray-900 p-1">
+                    <div className="p-1">
                         <iframe
                             title={dashboard.name}
                             className="w-full"
