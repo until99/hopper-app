@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 
 // Auth
 import { AuthProvider, Login, ProtectedRoute, AdminRoute } from '../features/auth'
@@ -22,6 +22,7 @@ import { Groups, GroupUsers, GroupDashboard } from '../features/groups'
 import { Pipelines } from '../features/pipelines'
 
 export const router = createBrowserRouter([
+  { path: '/', element: <Navigate to="/login" replace /> },
   { path: '/login', element: <Login /> },
   { path: '*', element: <NotFoundPage /> },
   {
