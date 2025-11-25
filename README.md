@@ -42,6 +42,39 @@ Este é um projeto web moderno construído com Vite, React e TypeScript.
 4. **Acesse**
    - Abra [http://localhost:5173](http://localhost:5173) no navegador.
 
+## Testes
+
+O projeto utiliza Vitest para testes unitários e de integração.
+
+### Executar Testes
+
+```bash
+# Modo watch (recomendado durante desenvolvimento)
+pnpm test
+
+# Executar todos os testes uma vez
+pnpm test run
+
+# Interface visual dos testes
+pnpm test:ui
+```
+
+### Cobertura de Testes
+
+```bash
+# Gerar relatório de cobertura
+pnpm test:coverage
+```
+
+O relatório HTML será gerado em `coverage/index.html` e pode ser aberto no navegador para visualização detalhada.
+
+**Cobertura atual: ~94%** ✅
+
+- 122 testes em 12 arquivos
+- Cobertura de statements: 93.91%
+- Cobertura de branches: 92.18%
+- Cobertura de funções: 89.36%
+
 ---
 
 Para dúvidas, consulte os arquivos e diretórios citados acima.
