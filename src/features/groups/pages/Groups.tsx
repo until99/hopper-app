@@ -16,7 +16,7 @@ export default function Groups() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isAddUsersModalOpen, setIsAddUsersModalOpen] = useState(false);
     const [isAddDashboardsModalOpen, setIsAddDashboardsModalOpen] = useState(false);
-    
+
     const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
     const [selectedGroupName, setSelectedGroupName] = useState("");
 
@@ -75,7 +75,7 @@ export default function Groups() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-4 sm:py-6 lg:py-8">
+        <div className="min-h-screen bg-gray-50 py-4 sm:py-6 lg:py-8 overflow-hidden">
             {/* Modals */}
             <CreateGroupModal
                 isOpen={isCreateModalOpen}
@@ -116,9 +116,9 @@ export default function Groups() {
                         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-1 sm:mb-2">Groups Management</h1>
                         <p className="text-sm sm:text-base text-gray-600">Manage groups, users, and dashboards</p>
                     </div>
-                    <button 
+                    <button
                         onClick={() => setIsCreateModalOpen(true)}
-                        className="inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors shadow-sm w-full sm:w-auto"
+                        className="text-black inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 bg-primary-600 hover:bg-primary-700 rounded-lg font-medium transition-colors shadow-sm w-full sm:w-auto"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

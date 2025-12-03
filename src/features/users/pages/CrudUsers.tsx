@@ -45,7 +45,7 @@ export default function CrudUsers() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8">
+        <div className="min-h-screen bg-gray-50 py-8 overflow-hidden">
             <CreateUserModal
                 isOpen={createModalOpen}
                 onClose={() => setCreateModalOpen(false)}
@@ -76,9 +76,9 @@ export default function CrudUsers() {
                         </h1>
                         <p className="text-gray-600">Manage user accounts, roles, and permissions</p>
                     </div>
-                    <button 
+                    <button
                         onClick={openUserCreateModal}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors shadow-sm"
+                        className="text-black inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 rounded-lg font-medium transition-colors shadow-sm"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

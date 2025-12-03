@@ -8,7 +8,7 @@ import DeleteDashboardModal from "../modals/DeleteDashboardModal";
 function CrudDashboard() {
     const { dashboards, loading, pipelineAssociation, updatePipelineAssociation } = useDashboards();
     const { runPipeline, unlinkPipeline, refreshLoading, refreshError, unlinkLoading, unlinkError } = usePipelineActions();
-    
+
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedDashboardId, setSelectedDashboardId] = useState<string | null>(null);
     const [selectedDashboardGroupId, setSelectedDashboardGroupId] = useState<string | null>(null);
@@ -42,7 +42,7 @@ function CrudDashboard() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-4 sm:py-6 lg:py-8">
+        <div className="min-h-screen bg-gray-50 py-4 sm:py-6 lg:py-8 overflow-hidden">
             <DeleteDashboardModal
                 isOpen={deleteModalOpen}
                 onClose={handleCloseDeleteModal}
