@@ -8,7 +8,7 @@ import LinkDashboardModal from "../modals/LinkDashboardModal";
 export default function Pipelines() {
     const { pipelines, loading, refetch } = usePipelines();
     const { dashboards, fetchDashboards } = useDashboards();
-    
+
     const [isLinkDashboardModalOpen, setIsLinkDashboardModalOpen] = useState(false);
     const [selectedPipelineId, setSelectedPipelineId] = useState<string | null>(null);
 
@@ -35,7 +35,7 @@ export default function Pipelines() {
     const airflowUrl = import.meta.env.VITE_AIRFLOW_URL;
 
     return (
-        <div className="min-h-screen bg-gray-50 py-4 sm:py-6 lg:py-8">
+        <div className="min-h-screen bg-gray-50 py-4 sm:py-6 lg:py-8 overflow-hidden">
             <LinkDashboardModal
                 isOpen={isLinkDashboardModalOpen}
                 onClose={handleCloseModals}
@@ -66,9 +66,9 @@ export default function Pipelines() {
                     )}
                 </div>
 
-                <PipelinesTable 
-                    pipelines={pipelines} 
-                    loading={loading} 
+                <PipelinesTable
+                    pipelines={pipelines}
+                    loading={loading}
                     onLinkDashboard={handleOpenLinkDashboardModal}
                 />
             </div>

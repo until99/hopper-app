@@ -10,17 +10,17 @@ function DashboardId() {
     const { isAdmin } = useAuth();
     const { groupId, dashboardId } = useParams();
     const navigate = useNavigate();
-    
+
     const { dashboard, loading, pipelineAssociated } = useDashboardDetails(groupId, dashboardId);
     const { runPipeline, refreshLoading, refreshError } = usePipelineActions();
-    
+
     const [refreshSuccess, setRefreshSuccess] = useState("");
 
     const handleRefreshPipeline = async () => {
         if (!dashboardId) return;
-        
+
         setRefreshSuccess("");
-        
+
         if (!pipelineAssociated) {
             return;
         }
@@ -56,7 +56,7 @@ function DashboardId() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 py-3 sm:py-4 lg:py-6">
+        <div className="min-h-screen bg-gray-50 py-3 sm:py-4 lg:py-6 overflow-hidden">
             <Container maxWidth="full">
                 {/* Header */}
                 <div className="mb-4 sm:mb-6">
@@ -67,7 +67,7 @@ function DashboardId() {
                         <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                         <span>Back</span>
                     </button>
-                    
+
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                         <div className="flex-1 min-w-0">
                             <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 sm:mb-2 truncate">{dashboard.name}</h1>
@@ -79,7 +79,7 @@ function DashboardId() {
                                 {pipelineAssociated && <Badge variant="success" size="sm">Pipeline Associated</Badge>}
                             </div>
                         </div>
-                        
+
                         {pipelineAssociated && isAdmin() && (
                             <Button
                                 variant="primary"
@@ -121,7 +121,7 @@ function DashboardId() {
                         <iframe
                             title={dashboard.name}
                             className="w-full"
-                            style={{ 
+                            style={{
                                 height: 'calc(100vh - 200px)',
                                 minHeight: '400px'
                             }}

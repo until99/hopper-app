@@ -19,6 +19,9 @@ export const GroupsTable = ({
     onAddUsers,
     onAddDashboards
 }: GroupsTableProps) => {
+    // Garantir que groups seja sempre um array
+    const groupsList = Array.isArray(groups) ? groups : [];
+
     if (loading) {
         return (
             <Card>
@@ -31,7 +34,7 @@ export const GroupsTable = ({
         );
     }
 
-    if (!groups || groups.length === 0) {
+    if (!groupsList || groupsList.length === 0) {
         return (
             <Card>
                 <div className="text-center py-8 sm:py-12 px-4">
@@ -58,7 +61,7 @@ export const GroupsTable = ({
                         </tr>
                     </TableHeader>
                     <TableBody>
-                        {groups.map((group) => (
+                        {groupsList.map((group) => (
                             <TableRow key={group.id}>
                                 <TableCell>
                                     <div className="font-medium text-gray-900 text-sm sm:text-base">{group.name}</div>
@@ -82,8 +85,8 @@ export const GroupsTable = ({
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex items-center justify-end gap-1 sm:gap-2 flex-wrap">
-                                        <Button 
-                                            variant="ghost" 
+                                        <Button
+                                            variant="ghost"
                                             size="sm"
                                             onClick={() => onEdit(group.id, group.name)}
                                             title="Edit group"
@@ -93,8 +96,8 @@ export const GroupsTable = ({
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
                                         </Button>
-                                        <Button 
-                                            variant="ghost" 
+                                        <Button
+                                            variant="ghost"
                                             size="sm"
                                             onClick={() => onAddUsers(group.id, group.name)}
                                             title="Add users"
@@ -104,8 +107,8 @@ export const GroupsTable = ({
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                                             </svg>
                                         </Button>
-                                        <Button 
-                                            variant="ghost" 
+                                        <Button
+                                            variant="ghost"
                                             size="sm"
                                             onClick={() => onAddDashboards(group.id, group.name)}
                                             title="Add dashboards"
@@ -130,8 +133,8 @@ export const GroupsTable = ({
                                                 </svg>
                                             </Button>
                                         </Link>
-                                        <Button 
-                                            variant="ghost" 
+                                        <Button
+                                            variant="ghost"
                                             size="sm"
                                             onClick={() => onDelete(group.id, group.name)}
                                             title="Delete group"

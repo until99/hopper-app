@@ -3,12 +3,12 @@ import { Briefcase } from "@phosphor-icons/react"
 import type { IGroup } from "../../groups/types/Group"
 import { useUserWorkspaces } from "../hooks/useUserWorkspaces"
 import { useAuthStore } from "../../../store/authStore"
-import { 
-    Card, 
-    CardHeader, 
-    CardTitle, 
-    CardDescription, 
-    CardContent, 
+import {
+    Card,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+    CardContent,
     Badge,
     PageHeader,
     PageContent,
@@ -17,9 +17,10 @@ import {
 
 function Workspaces() {
     const user = useAuthStore(state => state.user);
+    const isAdmin = useAuthStore(state => state.isAdmin);
     const userId = user?.id || null;
-    
-    const { groups, loading, error } = useUserWorkspaces(userId);
+
+    const { groups, loading, error } = useUserWorkspaces(userId, isAdmin());
 
     return (
         <>
@@ -60,8 +61,8 @@ function Workspaces() {
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                         {groups.map((group: IGroup) => (
-                            <Link 
-                                key={group.id} 
+                            <Link
+                                key={group.id}
                                 to={`${group.id}/dashboards`}
                                 className="group"
                             >

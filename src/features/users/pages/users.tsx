@@ -46,7 +46,7 @@ export default function CrudUsers() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 py-4 sm:py-6 lg:py-8">
+        <div className="min-h-screen bg-gray-50 py-4 sm:py-6 lg:py-8 overflow-hidden">
             <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
@@ -56,14 +56,14 @@ export default function CrudUsers() {
                         </h1>
                         <p className="text-sm sm:text-base text-gray-600">Manage user accounts and permissions</p>
                     </div>
-                    <button 
+                    <button
                         onClick={openUserCreateModal}
-                        className="inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors shadow-sm w-full sm:w-auto"
+                        className="inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 bg-primary-600 hover:bg-primary-700 rounded-lg font-medium transition-colors shadow-sm w-full sm:w-auto"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                         </svg>
-                        <span className="hidden sm:inline">Create New User</span>
+                        <span className="hidden sm:inline"><p className="text-black">Create New User</p></span>
                         <span className="sm:hidden">Create User</span>
                     </button>
                 </div>
