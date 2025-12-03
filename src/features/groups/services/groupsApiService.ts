@@ -7,7 +7,7 @@ export const groupsService = {
    * Para admin: retorna todos os grupos do sistema
    * Para usuário comum: retorna apenas grupos vinculados
    */
-  async fetchGroups(isAdmin?: boolean): Promise<IGroup[]> {
+  async fetchGroups(): Promise<IGroup[]> {
     // Usa o mesmo endpoint /app/groups para todos
     // O backend deve retornar todos os grupos para admin
     const response = await api.get<IGroupsApiResponse>("/app/groups");

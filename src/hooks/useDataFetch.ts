@@ -3,7 +3,6 @@ import { dashboardService } from "../features/dashboard/services/dashboardServic
 import { groupsService } from "../features/groups/services/groupsApiService";
 import { usersService } from "../features/users/services/usersService";
 import { pipelinesService } from "../features/pipelines/services/pipelinesService";
-import { useAuthStore } from "../store/authStore";
 
 interface FetchQueueItem {
   name: string;
@@ -126,8 +125,6 @@ export const useFetchGroups = () => {
   const { groups, groupsState, setGroups, setGroupsState, isCacheValid } =
     useDataStore();
 
-  const { isAdmin } = useAuthStore();
-
   const fetchGroups = async (force = false) => {
     if (!force && isCacheValid(groupsState.lastFetch)) {
       console.log("Using cached groups");
@@ -142,7 +139,7 @@ export const useFetchGroups = () => {
     const fetchFn = async () => {
       setGroupsState({ loading: true, error: null });
       try {
-        const response = await groupsService.fetchGroups(isAdmin());
+        const response = await groupsService.fetchGroups();
         // Garantir que sempre seja um array
         const groupsArray = Array.isArray(response) ? response : [];
         setGroups(groupsArray);
