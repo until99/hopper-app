@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { GitBranch, ArrowSquareOut } from "@phosphor-icons/react";
+import { GitBranch, ArrowSquareOut, ArrowsClockwise } from "@phosphor-icons/react";
 import { usePipelines } from "../hooks/usePipelines";
 import { useDashboards } from "../hooks/useDashboards";
 import { PipelinesTable } from "../components/PipelinesTable";
@@ -8,6 +8,7 @@ import LinkDashboardModal from "../modals/LinkDashboardModal";
 export default function Pipelines() {
     const { pipelines, loading, refetch } = usePipelines();
     const { dashboards, fetchDashboards } = useDashboards();
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     const [isLinkDashboardModalOpen, setIsLinkDashboardModalOpen] = useState(false);
     const [selectedPipelineId, setSelectedPipelineId] = useState<string | null>(null);
@@ -32,6 +33,15 @@ export default function Pipelines() {
         refetch();
     };
 
+    const handleRefresh = async () => {
+        setIsRefreshing(true);
+        try {
+            await refetch();
+        } finally {
+            setIsRefreshing(false);
+        }
+    };
+
     const airflowUrl = import.meta.env.VITE_AIRFLOW_URL;
 
     return (
@@ -53,17 +63,30 @@ export default function Pipelines() {
                         </h1>
                         <p className="text-sm sm:text-base text-gray-600">Manage data pipelines and link them to dashboards</p>
                     </div>
-                    {airflowUrl && (
-                        <a
-                            href={airflowUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-black inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 bg-primary-600 hover:bg-primary-700 rounded-lg font-medium transition-colors shadow-sm w-full sm:w-auto"
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                        <button
+                            onClick={handleRefresh}
+                            disabled={isRefreshing || loading}
+                            className="text-black inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 bg-white hover:bg-gray-50 border border-gray-300 rounded-lg font-medium transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
                         >
-                            <ArrowSquareOut className="w-5 h-5" weight="bold" />
-                            <span>Open Airflow</span>
-                        </a>
-                    )}
+                            <ArrowsClockwise 
+                                className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} 
+                                weight="bold" 
+                            />
+                            <span>{isRefreshing ? 'Refreshing...' : 'Refresh'}</span>
+                        </button>
+                        {airflowUrl && (
+                            <a
+                                href={airflowUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-black inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 bg-primary-600 hover:bg-primary-700 rounded-lg font-medium transition-colors shadow-sm w-full sm:w-auto"
+                            >
+                                <ArrowSquareOut className="w-5 h-5" weight="bold" />
+                                <span>Open Airflow</span>
+                            </a>
+                        )}
+                    </div>
                 </div>
 
                 <PipelinesTable
