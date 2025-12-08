@@ -36,11 +36,20 @@ export const dashboardService = {
   async fetchPipelineAssociation(dashboardId: string): Promise<string | null> {
     try {
       const response = await api.get(`/app/dashboards/${dashboardId}/pipeline`);
-      if (response.data.items && response.data.items.length > 0) {
+      
+      // Verifica se a resposta tem um array de items
+      if (response.data.items && Array.isArray(response.data.items) && response.data.items.length > 0) {
         return response.data.items[0].pipeline_id;
       }
+      
+      // Verifica se a resposta é um objeto direto com pipeline_id
+      if (response.data.pipeline_id) {
+        return response.data.pipeline_id;
+      }
+      
       return null;
-    } catch {
+    } catch (error) {
+      console.error(`Error fetching pipeline association for dashboard ${dashboardId}:`, error);
       return null;
     }
   },

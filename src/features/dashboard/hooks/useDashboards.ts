@@ -27,10 +27,24 @@ export const useDashboards = () => {
     // Busca associações de pipeline quando dashboards mudam
     useEffect(() => {
         if (dashboards.length > 0) {
-            dashboards.forEach(async (dashboard) => {
-                const pipelineId = await dashboardService.fetchPipelineAssociation(dashboard.id);
-                setPipelineAssociation(prev => ({ ...prev, [dashboard.id]: pipelineId }));
-            });
+            // Usar Promise.all para aguardar todas as requisições
+            const loadPipelineAssociations = async () => {
+                const associations = await Promise.all(
+                    dashboards.map(async (dashboard) => {
+                        const pipelineId = await dashboardService.fetchPipelineAssociation(dashboard.id);
+                        return { dashboardId: dashboard.id, pipelineId };
+                    })
+                );
+                
+                // Atualiza todas as associações de uma vez
+                const newAssociations: PipelineAssociation = {};
+                associations.forEach(({ dashboardId, pipelineId }) => {
+                    newAssociations[dashboardId] = pipelineId;
+                });
+                setPipelineAssociation(newAssociations);
+            };
+            
+            loadPipelineAssociations();
         }
     }, [dashboards]);
 
