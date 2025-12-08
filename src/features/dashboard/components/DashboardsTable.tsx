@@ -89,7 +89,7 @@ export const DashboardsTable = ({
                                                 onClick={() => onRunPipeline(dashboard.id)}
                                                 disabled={refreshLoading[dashboard.id]}
                                                 isLoading={refreshLoading[dashboard.id]}
-                                                className="gap-1"
+                                                className="gap-1 text-black"
                                             >
                                                 <Play className="w-3 h-3" weight="fill" />
                                                 {refreshLoading[dashboard.id] ? 'Running...' : 'Run'}

@@ -58,7 +58,7 @@ export default function Pipelines() {
                             href={airflowUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors shadow-sm w-full sm:w-auto"
+                            className="text-black inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 bg-primary-600 hover:bg-primary-700 rounded-lg font-medium transition-colors shadow-sm w-full sm:w-auto"
                         >
                             <ArrowSquareOut className="w-5 h-5" weight="bold" />
                             <span>Open Airflow</span>
