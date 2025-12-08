@@ -22,7 +22,13 @@ export const useGroupDashboards = (groupId: string | undefined) => {
         groupId,
         isAdmin()
       );
-      setDashboards(data.dashboards);
+      
+      // Filtro adicional para garantir que apenas dashboards do grupo correto sejam exibidos
+      const filteredDashboards = data.dashboards.filter(
+        (dashboard) => dashboard.groupId === groupId
+      );
+      
+      setDashboards(filteredDashboards);
     } catch (err) {
       setError("Erro ao carregar dashboards");
       console.error("Error fetching dashboards:", err);
@@ -49,7 +55,12 @@ export const useGroupDashboards = (groupId: string | undefined) => {
         );
 
         if (isMounted) {
-          setDashboards(data.dashboards);
+          // Filtro adicional para garantir que apenas dashboards do grupo correto sejam exibidos
+          const filteredDashboards = data.dashboards.filter(
+            (dashboard) => dashboard.groupId === groupId
+          );
+          
+          setDashboards(filteredDashboards);
         }
       } catch (err) {
         if (isMounted) {
