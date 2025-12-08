@@ -17,12 +17,7 @@ export const dashboardService = {
     groupId: string,
     isAdmin?: boolean
   ): Promise<DashboardsResponse> {
-    // Se for admin, busca todos os dashboards
-    if (isAdmin) {
-      const response = await api.get<DashboardsResponse>("/dashboards");
-      return response.data;
-    }
-
+    // Independente de ser admin ou não, busca os dashboards do grupo específico
     const response = await api.get<Dashboard[]>(
       `/app/groups/${groupId}/dashboards`
     );

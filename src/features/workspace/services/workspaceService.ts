@@ -37,7 +37,12 @@ export const workspaceService = {
         return [];
       }
 
-      const filteredGroups = groups.filter((group: IGroup) => group.active);
+      // Admins veem todos os grupos (incluindo inativos)
+      // Usuários comuns veem apenas grupos ativos
+      const filteredGroups = isAdmin 
+        ? groups 
+        : groups.filter((group: IGroup) => group.active);
+      
       return filteredGroups;
     } catch (error) {
       console.error("Error in workspaceService:", error);

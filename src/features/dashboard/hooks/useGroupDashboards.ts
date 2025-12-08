@@ -10,7 +10,7 @@ export const useGroupDashboards = (groupId: string | undefined) => {
   const { isAdmin } = useAuth();
 
   const fetchDashboards = useCallback(async () => {
-    if (!groupId && !isAdmin()) {
+    if (!groupId) {
       setLoading(false);
       return;
     }
@@ -19,7 +19,7 @@ export const useGroupDashboards = (groupId: string | undefined) => {
       setLoading(true);
       setError(null);
       const data = await dashboardService.fetchGroupDashboards(
-        groupId || "",
+        groupId,
         isAdmin()
       );
       setDashboards(data.dashboards);
@@ -35,7 +35,7 @@ export const useGroupDashboards = (groupId: string | undefined) => {
     let isMounted = true;
 
     const loadDashboards = async () => {
-      if (!groupId && !isAdmin()) {
+      if (!groupId) {
         setLoading(false);
         return;
       }
@@ -44,7 +44,7 @@ export const useGroupDashboards = (groupId: string | undefined) => {
         setLoading(true);
         setError(null);
         const data = await dashboardService.fetchGroupDashboards(
-          groupId || "",
+          groupId,
           isAdmin()
         );
 
