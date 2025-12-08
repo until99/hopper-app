@@ -43,7 +43,9 @@ export const dashboardService = {
       }
       
       // Verifica se a resposta é um objeto direto com pipeline_id
-      if (response.data.pipeline_id) {
+      if (response.data && 'pipeline_id' in response.data) {
+        // Se pipeline_id é null, retorna null (dashboard sem pipeline vinculado)
+        // Se pipeline_id tem valor, retorna o valor (ex: "weather_report")
         return response.data.pipeline_id;
       }
       
