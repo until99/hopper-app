@@ -110,7 +110,8 @@ export const useFetchDashboards = () => {
       priority: 3,
     });
 
-    return dashboards;
+    // Return the updated dashboards from the store
+    return useDataStore.getState().dashboards;
   };
 
   return {
@@ -162,7 +163,8 @@ export const useFetchGroups = () => {
       priority: 2,
     });
 
-    return groups;
+    // Return the updated groups from the store
+    return useDataStore.getState().groups;
   };
 
   return {
@@ -212,7 +214,8 @@ export const useFetchUsers = () => {
       priority: 1,
     });
 
-    return users;
+    // Return the updated users from the store
+    return useDataStore.getState().users;
   };
 
   return {
@@ -267,7 +270,8 @@ export const useFetchPipelines = () => {
       priority: 0,
     });
 
-    return pipelines;
+    // Return the updated pipelines from the store
+    return useDataStore.getState().pipelines;
   };
 
   return {
